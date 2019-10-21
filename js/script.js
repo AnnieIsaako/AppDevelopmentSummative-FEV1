@@ -122,10 +122,10 @@ getListingData = () => {
               <img class="listingsImg" src="${url}/${result[i].itemImage}" class="card-img-top">
             </div>
             <div class="card-body d-flex justify-content-between flex-row">
-              <div class="col-9">
+              <div class="col-8 col-sm-8 px-1">
                 <h6 class="card-title"> ${result[i].itemName}</h6>
               </div>
-              <div class="col-3 border-left">
+              <div class="col-4 col-sm-4 border-left px-1">
                 <small class="text-muted pl-2">$${result[i].itemPrice}</small>
               </div>
             </div>
@@ -145,12 +145,13 @@ getCommentData = () => {
     url: `${url}/allComments`,
     type: 'GET',
     success:function(commentsResult){
+      $('#commentsDisplay').empty();
       for (var i = 0; i < commentsResult.length; i++) {
         if (commentsResult[i].commentID === currentCardId) {
           $('#comments').val(null);
-          $('#commentsDisplay').empty();
+          // $('#commentsDisplay').empty();
           $('#commentsDisplay').append(`
-            <div id="commentsCard" class="col-md-4">
+            <div id="commentsCard" class="col-12">
               <div class="card mb-4 shadow-sm">
                 <div class="card-body " id="commentBody">
                   <p class="card-text">${commentsResult[i].commentDescription}</p>
@@ -272,7 +273,7 @@ $('#submitForm').click(function(){
       },
       success:function(result){
         console.log(result);
-        $('#comments').val(null);
+        // $('#comments').val(null);
         getCommentData();
         $('#commentsDisplay').append(`
           <div id="commentsCard" class="col-md-4">
@@ -387,17 +388,15 @@ $('#subitNewListing').click(function() {
       $('#addLisingModal').modal('hide');
 
       $('.listingDisplay').append(`
-        <div class="card cardListStyle mb-4 listingCard ${result._id}" data-toggle="modal" data-target="#listingModel" data-id="${result._id}">
-          <img class="listingsImg" src="${url}/${result.itemImage}" class="card-img-top" alt="...">
-          <div class="card-body d-flex justify-content-between flex-row">
-            <div class="col-9">
+        <div class="card cardListStyle listingCard" data-toggle="modal" data-target="#listingModel" data-id="${result._id}">
+            <img class="listingsImg card-img-top" src="${url}/${result.itemImage}" alt="...">
+            <div class="card-body cardListBodyStyle" data-id="${result._id}">
+              <div class="d-flex justify-content-between align-items-center">
               <h6 class="card-title">${result.itemName}</h6>
-            </div>
-            <div class="col-3 border-left">
-              <small class="text-muted">$${result.itemPrice}</small>
+                <small class="text-muted">$${result.itemPrice}</small>
+              </div>
             </div>
           </div>
-        </div>
       `);
     },
     error: function(error){
@@ -595,35 +594,3 @@ $('#submitForm').click(function(){
     }
   });
 });
-// Katherine codes until here
-
-// Annies code continued
-// $('#submitResponse').click(function(){
-//   event.preventDefault();
-//
-//   let responseArea = $('#responses').val();
-//
-//   $.ajax({
-//     url: `${url}/sendResponse`,
-//     type: 'POST',
-//     data: {
-//       responceDescription: responseArea
-//     },
-//     success:function(result){
-//       console.log(result);
-//       $('#commentsDisplay').append(`
-//         <div id="commentsCard" class="col-md-4">
-//           <div class="card mb-4 shadow-sm">
-//             <div class="card-body">
-//               <p class="card-text">${result.responceDescription}</p>
-//               </div>
-//           </div>
-//         </div>
-//       `);
-//     },
-//     error: function(error){
-//       console.log(error);
-//       console.log('something went wrong with sending the data');
-//     }
-//   });
-// });
