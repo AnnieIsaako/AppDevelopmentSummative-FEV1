@@ -20,45 +20,34 @@
         </div>
       </div>
 
-      <div class="row mt-4 ">
-        <div id="searchForm" class="col-9 d-flex flex-row align-items-center">
-          <form class="input-group border-bottom ml-2">
-            <div class="input-group-prepend">
-            <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+      <div class="row mt-4 justify-content-end">
+        <button id="hamburgerNav" type="button" class="btn btn-link text-dark"><i class="fas fa-bars pl-4"></i></button>
+      </div>
+    </div>
+
+    <div id="navDropDown" class="pt-4 d-none">
+      <div class="row">
+        <div class="col-12">
+          <div id="navCard" class="card p-3 d-flex flex-row">
+            <div id="userStatusButtons" class="col-4 mr-4 d-flex justify-content-center align-items-center flex-column">
+              <button type="button" class="btn btn-outline-success px-4 mt-3 d-none" id="logout">Logout</button>
+              <button type="button" class="btn btn-success px-4" id="logBtn"><a href="login.html">Login</a></button>
+              <button type="button" class="btn btn-outline-success px-4 mt-3" id="regoBtn"><a href="register.html">Register</a></button>
             </div>
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-          </form>
-        </div>
 
-        <div class="col-3">
-          <button id="hamburgerNav" type="button" class="btn btn-link text-dark"><i class="fas fa-bars pl-4"></i></button>
-        </div>
-      </div>
-    </div>
-
-  <div id="navDropDown" class="pt-4 d-none">
-    <div class="row">
-      <div class="col-12">
-        <div id="navCard" class="card p-3 d-flex flex-row">
-          <div id="userStatusButtons" class="col-4 mr-4 d-flex justify-content-center align-items-center flex-column">
-            <button type="button" class="btn btn-outline-success px-4 mt-3 d-none" id="logout">Logout</button>
-            <button type="button" class="btn btn-success px-4" id="logBtn"><a href="login.html">Login</a></button>
-            <button type="button" class="btn btn-outline-success px-4 mt-3" id="regoBtn"><a href="register.html">Register</a></button>
-          </div>
-
-          <div class="col-8 border-left">
-            <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse tempor eleifend viverra. Morbi porttitor dolor lectus,
-            eu venenatis augue feugiat sit amet. Suspendisse potenti.
-            </li>
-            </ul>
+            <div class="col-8 border-left">
+              <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse tempor eleifend viverra. Morbi porttitor dolor lectus,
+              eu venenatis augue feugiat sit amet. Suspendisse potenti.
+              </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  </div>
+  </div>  
 
 
 
@@ -121,7 +110,7 @@
         <div id="addListingForm">
           <div class="row">
             <div class="col-12">
-              <div id="addLisingModal" class="modal fade mt-4" tabindex="-1" role="dialog">
+              <div id="addListingModal" class="modal fade mt-4" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
                   <div class="modal-content">
                     <div class="modal-header d-flex justify-content-center align-items-center">
@@ -293,33 +282,32 @@
          </div>
        </div>
 
-    <div class="d-none" id="signIn">
-         <div id="loginCard">
-          <div id="gradient">
-            <div class="contents d-flex flex-column align-items-center">
-              <h1>digimart</h1>
-              <div class="card mt-4 cardStyle" style="width: 21rem;">
-                <div class="card-body">
-                    <form>
-                      <div class="form-row d-flex flex-column align-items-center">
-                        <div class="form-group col-md-10 mt-4">
-                           <input class="form-control border-bottom" placeholder="Enter your Username" id="lUsername" type="text">
-                        </div>
-                        <div class="form-group col-md-10 mt-4">
-                           <input class="form-control border-bottom" placeholder="Enter your Password" id="lPassword" type="password">
-                        </div>
-                          <button id="login" type="button" class="d-flex flex-column justify-content-center align-items-center btn btn-success mt-4">Login</button>
-                          <small class="loginLink form-text text-muted mt-4">Don't have an account? <span id="signUpHere">Register Here</span></small>
-                          <small class="loginLink form-text text-muted">Continue as <span class="guest">Guest</span></small>
+  <div class="d-none" id="signIn">
+       <div id="loginCard">
+        <div id="gradient">
+          <div class="contents d-flex flex-column align-items-center">
+            <h1>digimart</h1>
+            <div class="card mt-4 cardStyle" style="width: 21rem;">
+              <div class="card-body">
+                  <form>
+                    <div class="form-row d-flex flex-column align-items-center">
+                      <div class="form-group col-md-10 mt-4">
+                         <input class="form-control border-bottom" placeholder="Enter your Username" id="lUsername" type="text">
                       </div>
-                   </form>
-                 </div>
-              </div>
+                      <div class="form-group col-md-10 mt-4">
+                         <input class="form-control border-bottom" placeholder="Enter your Password" id="lPassword" type="password">
+                      </div>
+                        <button id="login" type="button" class="d-flex flex-column justify-content-center align-items-center btn btn-success mt-4">Login</button>
+                        <small class="loginLink form-text text-muted mt-4">Don't have an account? <span id="signUpHere">Register Here</span></small>
+                        <small class="loginLink form-text text-muted">Continue as <span class="guest">Guest</span></small>
+                    </div>
+                 </form>
+               </div>
             </div>
           </div>
         </div>
-       </div>
-   </div>
+      </div>
+     </div>
 
     <script src="node_modules/jquery/dist/jquery.min.js" charset="utf-8"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js" charset="utf-8"></script>

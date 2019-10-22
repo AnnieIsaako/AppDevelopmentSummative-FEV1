@@ -116,27 +116,28 @@ getListingData = () => {
       // $('.listingDisplay').empty();
 
       for (var i = 0; i < result.length; i++) {
-        $('.listingDisplay').append(`
-          <div class="card cardListStyle mb-4 listingCard" id="${result[i]._id}" data-toggle="modal" data-target="#listingModel" data-id="${result[i]._id}">
-            <div>
-              <img class="listingsImg" src="${url}/${result[i].itemImage}" class="card-img-top">
+      $('.listingDisplay').append(`
+        <div class="card cardListStyle mb-4 listingCard" id="${result[i]._id}" data-toggle="modal" data-target="#listingModel" data-id="${result[i]._id}">
+          <div>
+            <img class="listingsImg" src="${url}/${result[i].itemImage}" class="card-img-top">
+          </div>
+
+          <div class="card-body d-flex justify-content-between flex-row">
+            <div class="col-8 col-sm-8 px-1">
+              <h6 class="card-title"> ${result[i].itemName}</h6>
             </div>
-            <div class="card-body d-flex justify-content-between flex-row">
-              <div class="col-8 col-sm-8 px-1">
-                <h6 class="card-title"> ${result[i].itemName}</h6>
-              </div>
-              <div class="col-4 col-sm-4 border-left px-1">
-                <small class="text-muted pl-2">$${result[i].itemPrice}</small>
-              </div>
+            <div class="col-4 col-sm-4 border-left px-1">
+              <small class="text-muted pl-2">$${result[i].itemPrice}</small>
             </div>
           </div>
-        `);
-      }
-    },
-    error: function(err){
-      console.log(err);
-      console.log('something went wrong with getting all the products');
+        </div>
+      `);
     }
+  },
+  error: function(err){
+  console.log(err);
+  console.log('something went wrong with getting all the products');
+  }
   });
 };
 
@@ -149,7 +150,6 @@ getCommentData = () => {
       for (var i = 0; i < commentsResult.length; i++) {
         if (commentsResult[i].commentID === currentCardId) {
           $('#comments').val(null);
-          // $('#commentsDisplay').empty();
           $('#commentsDisplay').append(`
             <div id="commentsCard" class="col-12">
               <div class="card mb-4 shadow-sm">
@@ -195,62 +195,61 @@ $('#cardsAndComment').on('click', '.deleteBtn', function() {
   }
 });
 
-$('#cardsAndComment').on('click', '.editBtn', function() {
-  if(!sessionStorage.userID) {
-      console.log('You don\'t have permission to delete this item. Please sign in.');
-      return;
-  } else {
-    event.preventDefault();
-    $('#myModal').modal('hide');
-
-    $('#exampleModalLabel').text('Edit listing');
-    $('#addLisingModal').modal('show');
-
-      $('#cardsAndComment').on('click', '#subitNewListing', function() {
-        let itemName = $('#itemName').val();
-        let itemPrice = $('#itemPrice').val();
-        let itemDescription = $('#itemDescription').val();
-        let itemImage = $('#itemImage').val();
-        let fd = new FormData();
-
-        const file = $('#itemImage')[0].files[0];
-        fd.append('uploadImage', file);
-        fd.append('itemName', itemName);
-        fd.append('itemPrice', itemPrice);
-        fd.append('itemImage', itemImage);
-
-
-        $.ajax({
-          url: `${url}//updateListing/${currentCardId}`,
-          type: 'PATCH',
-          data: fd,
-          processData: false,
-          contentType: false,
-          success:function(result){
-            console.log(result);
-            $('#addLisingModal').modal('hide');
-
-            $('#listingImage').empty();
-            $('#resultName').empty();
-            $('#listingCardDescription').empty();
-            $('#resultPrice').empty();
-            $('#resultSeller').empty();
-
-            $('#listingImage').append(`<img src="${url}/${result.itemImage}" class="card-img-top" style="width: 100%">`);
-            $('#resultName').append(`${result.itemName}`);
-            $('#listingCardDescription').append(`${result.itemDescription}`);
-            $('#resultPrice').append(`$${result.itemPrice}`);
-            $('#resultSeller').append(seller);
-
-          },
-          error: function(error){
-            console.log(error);
-            console.log('something went wrong with sending the data');
-          }
-        });
-    });
-  }
-});
+// $('#cardsAndComment').on('click', '.editBtn', function() {
+//   if(!sessionStorage.userID) {
+//       console.log('You don\'t have permission to edit this item. Please sign in.');
+//       return;
+//   } else {
+//     event.preventDefault();
+//     $('#myModal').modal('hide');
+//
+//     $('#exampleModalLabel').text('Edit listing');
+//     $('#addListingModal').modal('show');
+//
+//       $('#cardsAndComment').on('click', '#subitNewListing', function() {
+//         let itemName = $('#itemName').val();
+//         let itemPrice = $('#itemPrice').val();
+//         let itemDescription = $('#itemDescription').val();
+//         let itemImage = $('#itemImage').val();
+//         let fd = new FormData();
+//
+//         const file = $('#itemImage')[0].files[0];
+//         fd.append('uploadImage', file);
+//         fd.append('itemName', itemName);
+//         fd.append('itemPrice', itemPrice);
+//         fd.append('itemImage', itemImage);
+//
+//
+//         $.ajax({
+//           url: `${url}/updateListing/${currentCardId}`,
+//           type: 'PATCH',
+//           data: fd,
+//           processData: false,
+//           contentType: false,
+//           success:function(result){
+//             console.log(result);
+//             $('#addListingModal').modal('hide');
+//
+//             $('#listingImage').empty();
+//             $('#resultName').empty();
+//             $('#listingCardDescription').empty();
+//             $('#resultPrice').empty();
+//             $('#resultSeller').empty();
+//
+//             $('#listingImage').append(`<img src="${url}/${result.itemImage}" class="card-img-top" style="width: 100%">`);
+//             $('#resultName').append(`${result.itemName}`);
+//             $('#listingCardDescription').append(`${result.itemDescription}`);
+//             $('#resultPrice').append(`$${result.itemPrice}`);
+//             $('#resultSeller').append(seller);
+//           },
+//           error: function(error){
+//             console.log(error);
+//             console.log('something went wrong with sending the data');
+//           }
+//         });
+//     });
+//   }
+// });
 
 $('#submitForm').click(function(){
   event.preventDefault();
@@ -300,7 +299,7 @@ $('.listingDisplay').on('click', '.listingCard', function(listingNumber){
   event.preventDefault();
 
   currentCardId = $(this).data('id');
-  // console.log(this);
+  console.log(this);
   // console.log(cardId);
 
   $.ajax({
@@ -308,6 +307,7 @@ $('.listingDisplay').on('click', '.listingCard', function(listingNumber){
     type: 'GET',
     dataType: 'json',
     success:function(result){
+      console.log(result);
       $('#myModal').modal('show');
 
       $('#listingImage').empty();
@@ -316,7 +316,7 @@ $('.listingDisplay').on('click', '.listingCard', function(listingNumber){
       $('#resultPrice').empty();
       $('#resultSeller').empty();
 
-      $('#listingImage').append(`<img src="${url}/${result.itemImage}" class="card-img-top" style="width: 100%">`);
+      $('#listingImage').append(`<img src="${url}/${result.itemImage}" class="card-img-top pt-3" style="width: 100%">`);
       $('#resultName').append(`${result.itemName}`);
       $('#listingCardDescription').append(`${result.itemDescription}`);
       $('#resultPrice').append(`$${result.itemPrice}`);
@@ -344,19 +344,19 @@ $('#addNewListing').click(function() {
   if(!sessionStorage.userID) {
     $('#invalidModal').modal('show');
   } else {
-    $('#addLisingModal').modal('show');
-    $('#itemSeller').val(seller);
-    console.log(seller);
+    $('#addListingModal').modal('show');
+    // let seller = $('#itemSeller').val( );
+    // console.log(seller);
   }
 });
 
 $('#itemImage').change(function(e){
-        console.log(e.target.files.length);
-        if(e.target.files.length > 0){
-            const fileName = e.target.files[0].name;
-            $(this).next('.custom-file-label').html(fileName);
-        }
-    });
+  // console.log(e.target.files.length);
+  if(e.target.files.length > 0){
+    const fileName = e.target.files[0].name;
+    $(this).next('.custom-file-label').html(fileName);
+  }
+});
 
 $('#subitNewListing').click(function() {
 
@@ -364,18 +364,16 @@ $('#subitNewListing').click(function() {
   let itemPrice = $('#itemPrice').val();
   let itemDescription = $('#itemDescription').val();
   let itemImage = $('#itemImage').val();
-  let itemSeller = $('#itemSeller').val();
   let fd = new FormData();
 
   const file = $('#itemImage')[0].files[0];
   fd.append('uploadImage', file);
   fd.append('itemName', itemName);
   fd.append('itemPrice', itemPrice);
-  fd.append('itemImage', itemImage);
-  fd.append('itemSeller', itemSeller);
+  fd.append('itemDescription', itemDescription);
 
-  // let newListing = itemName + ' $' + itemPrice + ' ' + itemDescription + ' ' + fd;
-  // console.log(newListing);
+  let newListing = itemName + ' $' + itemPrice + ' ' + itemDescription + ' ' + fd;
+  console.log(newListing);
 
   $.ajax({
     url: `${url}/listing`,
@@ -385,23 +383,29 @@ $('#subitNewListing').click(function() {
     contentType: false,
     success:function(result){
       console.log(result);
-      $('#addLisingModal').modal('hide');
+      $('#addListingModal').modal('hide');
 
       $('.listingDisplay').append(`
-        <div class="card cardListStyle listingCard" data-toggle="modal" data-target="#listingModel" data-id="${result._id}">
-            <img class="listingsImg card-img-top" src="${url}/${result.itemImage}" alt="...">
-            <div class="card-body cardListBodyStyle" data-id="${result._id}">
-              <div class="d-flex justify-content-between align-items-center">
-              <h6 class="card-title">${result.itemName}</h6>
-                <small class="text-muted">$${result.itemPrice}</small>
-              </div>
+        <div class="card cardListStyle mb-4 listingCard" id="${result._id}" data-toggle="modal" data-target="#listingModel" data-id="${result._id}">
+          <div>
+            <img class="listingsImg" src="${url}/${result.itemImage}" class="card-img-top">
+          </div>
+
+          <div class="card-body d-flex justify-content-between flex-row">
+            <div class="col-8 col-sm-8 px-1">
+              <h6 class="card-title"> ${result.itemName}</h6>
+            </div>
+            <div class="col-4 col-sm-4 border-left px-1">
+              <small class="text-muted pl-2">$${result.itemPrice}</small>
             </div>
           </div>
+        </div>
       `);
+
     },
     error: function(error){
       console.log(error);
-      console.log('something went wrong with sending the data');
+      console.log('something went wrong with sending the data. Please check that your image is a png or jpeg. Any other file type will not be uploaded.');
     }
   });
 });
@@ -502,6 +506,7 @@ $(document).ready(function(){
 $('#hamburgerNav').click(function(){
   if ($('#navDropDown').hasClass('d-none')) {
     $('#navDropDown').removeClass('d-none');
+    $('#navDropDown').slideDown();
     $('#hamburgerNav').empty();
     $('#hamburgerNav').append('<i class="fas fa-times pl-4"></i>');
   } else {
@@ -512,15 +517,6 @@ $('#hamburgerNav').click(function(){
 });
 
 // larissa untill here
-
-$('#login').click(function(){
-  $('#index').removeClass('d-none');
-  $('#signIn').addClass('d-none');
-  $('#rego').addClass('d-none');
-  $('#logBtn').addClass('d-none');
-  $('#regoBtn').addClass('d-none');
-  $('#logout').removeClass('d-none');
-});
 
 $('#logBtn').click(function(){
  $('#index').addClass('d-none');
@@ -534,12 +530,6 @@ $('#logout').click(function(){
  $('#logBtn').removeClass('d-none');
  $('#regoBtn').removeClass('d-none');
  $('#logout').addClass('d-none');
-});
-
-
-$('#regoBtn').click(function(){
- $('#index').addClass('d-none');
- $('#rego').removeClass('d-none');
 });
 
 $('.guest').click(function(){
