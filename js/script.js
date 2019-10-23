@@ -112,9 +112,6 @@ getListingData = () => {
     url: `${url}/allListings`,
     type: 'GET',
     success:function(result) {
-      // console.log(result[0]._id);
-      // $('.listingDisplay').empty();
-
       for (var i = 0; i < result.length; i++) {
       $('.listingDisplay').append(`
         <div class="card cardListStyle mb-4 listingCard" id="${result[i]._id}" data-toggle="modal" data-target="#listingModel" data-id="${result[i]._id}">
@@ -135,8 +132,8 @@ getListingData = () => {
     }
   },
   error: function(err){
-  console.log(err);
-  console.log('something went wrong with getting all the products');
+    console.log(err);
+    console.log('something went wrong with getting all the products');
   }
   });
 };
@@ -195,61 +192,61 @@ $('#cardsAndComment').on('click', '.deleteBtn', function() {
   }
 });
 
-// $('#cardsAndComment').on('click', '.editBtn', function() {
-//   if(!sessionStorage.userID) {
-//       console.log('You don\'t have permission to edit this item. Please sign in.');
-//       return;
-//   } else {
-//     event.preventDefault();
-//     $('#myModal').modal('hide');
-//
-//     $('#exampleModalLabel').text('Edit listing');
-//     $('#addListingModal').modal('show');
-//
-//       $('#cardsAndComment').on('click', '#subitNewListing', function() {
-//         let itemName = $('#itemName').val();
-//         let itemPrice = $('#itemPrice').val();
-//         let itemDescription = $('#itemDescription').val();
-//         let itemImage = $('#itemImage').val();
-//         let fd = new FormData();
-//
-//         const file = $('#itemImage')[0].files[0];
-//         fd.append('uploadImage', file);
-//         fd.append('itemName', itemName);
-//         fd.append('itemPrice', itemPrice);
-//         fd.append('itemImage', itemImage);
-//
-//
-//         $.ajax({
-//           url: `${url}/updateListing/${currentCardId}`,
-//           type: 'PATCH',
-//           data: fd,
-//           processData: false,
-//           contentType: false,
-//           success:function(result){
-//             console.log(result);
-//             $('#addListingModal').modal('hide');
-//
-//             $('#listingImage').empty();
-//             $('#resultName').empty();
-//             $('#listingCardDescription').empty();
-//             $('#resultPrice').empty();
-//             $('#resultSeller').empty();
-//
-//             $('#listingImage').append(`<img src="${url}/${result.itemImage}" class="card-img-top" style="width: 100%">`);
-//             $('#resultName').append(`${result.itemName}`);
-//             $('#listingCardDescription').append(`${result.itemDescription}`);
-//             $('#resultPrice').append(`$${result.itemPrice}`);
-//             $('#resultSeller').append(seller);
-//           },
-//           error: function(error){
-//             console.log(error);
-//             console.log('something went wrong with sending the data');
-//           }
-//         });
-//     });
-//   }
-// });
+$('#cardsAndComment').on('click', '.editBtn', function() {
+  if(!sessionStorage.userID) {
+      console.log('You don\'t have permission to edit this item. Please sign in.');
+      return;
+  } else {
+    event.preventDefault();
+    $('#myModal').modal('hide');
+
+    $('#exampleModalLabel').text('Edit listing');
+    $('#addListingModal').modal('show');
+
+      $('#cardsAndComment').on('click', '#subitNewListing', function() {
+        let itemName = $('#itemName').val();
+        let itemPrice = $('#itemPrice').val();
+        let itemDescription = $('#itemDescription').val();
+        let itemImage = $('#itemImage').val();
+        let fd = new FormData();
+
+        const file = $('#itemImage')[0].files[0];
+        fd.append('uploadImage', file);
+        fd.append('itemName', itemName);
+        fd.append('itemPrice', itemPrice);
+        fd.append('itemImage', itemImage);
+
+
+        $.ajax({
+          url: `${url}/updateListing/${currentCardId}`,
+          type: 'PATCH',
+          data: fd,
+          processData: false,
+          contentType: false,
+          success:function(result){
+            console.log(result);
+            $('#addListingModal').modal('hide');
+
+            $('#listingImage').empty();
+            $('#resultName').empty();
+            $('#listingCardDescription').empty();
+            $('#resultPrice').empty();
+            $('#resultSeller').empty();
+
+            $('#listingImage').append(`<img src="${url}/${result.itemImage}" class="card-img-top" style="width: 100%">`);
+            $('#resultName').append(`${result.itemName}`);
+            $('#listingCardDescription').append(`${result.itemDescription}`);
+            $('#resultPrice').append(`$${result.itemPrice}`);
+            $('#resultSeller').append(seller);
+          },
+          error: function(error){
+            console.log(error);
+            console.log('something went wrong with sending the data');
+          }
+        });
+    });
+  }
+});
 
 $('#submitForm').click(function(){
   event.preventDefault();
@@ -307,7 +304,7 @@ $('.listingDisplay').on('click', '.listingCard', function(listingNumber){
     type: 'GET',
     dataType: 'json',
     success:function(result){
-      console.log(result);
+      // console.log(result);
       $('#myModal').modal('show');
 
       $('#listingImage').empty();
@@ -406,79 +403,6 @@ $('#subitNewListing').click(function() {
     error: function(error){
       console.log(error);
       console.log('something went wrong with sending the data. Please check that your image is a png or jpeg. Any other file type will not be uploaded.');
-    }
-  });
-});
-
-$('.listingDisplay').on('click', '#editListing', function() {
-  event.preventDefault();
-
-  const id = $(this).parent().parent().parent().data('id');
-  console.log(id);
-
-  // $('#listingCard').empty();
-  $('.listingDisplay').append(`
-    <div id="addlistingForm" class="d-none mt-4">
-
-    </div>
-
-    <div id="listingCard" class="col-md-4">
-      <div class="card mb-4 shadow-sm">
-        <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/></svg>
-        <div class="card-body" data-id="${result[i]._id}">
-          <div class="form-group">
-            <label for="editedName">Item Name</label>
-            <input type="text" name="editedName" id="editedName" class="form-control">
-          </div>
-
-          <div class="form-group">
-            <label for="editedPrice">Item Price</label>
-            <input type="number" name="editedPrice" id="editedPrice" class="form-control">
-          </div>
-
-          <div class="form-group">
-            <label for="editedDescription">Item Description</label>
-            <textarea type="text" name="editedDescription" id="editedDescription" rows="3" class="form-control"></textarea>
-          </div>
-
-          <div class="mt-3">
-            <button id="editNewListing" type="button" class="btn btn-success">Edit Listing</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  `);
-
-
-  $.ajax({
-    url: `${url}/updateListing/${id}`,
-    type: 'get',
-    // data: {
-    //   userId: sessionStorage['userID']
-    // },
-    dataType: 'json',
-    success:function(product){
-      console.log(product);
-      // if(product == '401'){
-      //   alert('401 UNAUTHORIZED');
-      // } else {
-      //   // replace the input fields with the name and price from the database
-      //   $('#productName').val(product['name']);
-      //   $('#productPrice').val(product['price']);
-      //   // we have a hidden input field which we need to give it the value of the products id
-      //   $('#productID').val(product['_id']);
-      //   // Change the buttons text to edit and add the warning class
-      //   $('#addProductButton').text('Edit Product').addClass('btn-warning');
-      //   // Change the heading text
-      //   $('#heading').text('Edit Product');
-      //   // set the global variable of editing to true
-      //   editing = true;
-      // }
-    },
-    error:function(err){
-      console.log(err);
-      console.log('something went wrong with getting the single product');
     }
   });
 });

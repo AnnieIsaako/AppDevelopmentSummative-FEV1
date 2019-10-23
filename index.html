@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>digimart</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="plugins/OwlCarousel2-2.3.4/dist/assets/owl.carousel.min.css">
-    <link rel="stylesheet" href="plugins/OwlCarousel2-2.3.4/dist/assets/owl.theme.default.min.css">
+    <link rel="stylesheet" href="node_modules/owl.carousel/dist/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="node_modules/owl.carousel/dist/assets/owl.theme.default.min.css">
     <link rel="stylesheet" href="css/style.min.css">
   </head>
 
@@ -47,7 +47,7 @@
         </div>
       </div>
     </div>
-  </div>  
+  </div>
 
 
 
@@ -58,7 +58,7 @@
         <div id="welcomeCard" class="pt-3">
           <div class="row">
             <div class="col-12 d-flex justify-content-center">
-              <div id="cardImage" class="card bg-dark text-white">
+              <div id="cardImage" class="card bg-dark text-white cardImageStyle">
                 <div class="card-img-overlay d-flex flex-column justify-content-center">
                   <h4 class="card-title text-center ">Welcome to digimart!</h4>
                   <p class="text-center ">Sourcing local, buying smarter.</p>
@@ -193,6 +193,8 @@
                 <div class="row">
                   <div class="col-12 mt-4">
                     <div class="card cardListStyle" id="commentSection">
+                      <button type="button" class="btn btn-warning editBtn">Edit Listing</button>
+                      <button type="button" class="btn btn-danger deleteBtn">Delete Listing</button>
                       <div class="input-group mb-3 p-3">
                         <input type="text" class="form-control w-180 border-bottom" id="comments" rows="3" name="comments" placeholder="Add Comment Here">
                         <div class="input-group-append">
@@ -207,21 +209,6 @@
                   </div>
                 </div>
               </div>
-
-            <div class="input-group mb-3 px-2">
-              <input type="text" class="form-control w-180" id="comments" rows="3" name="comments" placeholder="Add Comment Here">
-              <div class="input-group-append">
-                <button class="btn btn-success" type="button" id="submitForm">Button</button>
-                <div class="row mt-2" id="userListingButtons">
-                  <div class="col-12">
-                    <div id="buttons" class="d-flex justify-content-around align-items-center flex-row p-3">
-                      <button type="button" class="btn btn-warning editBtn">Edit Listing</button>
-                      <button type="button" class="btn btn-danger deleteBtn">Delete Listing</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -253,7 +240,7 @@
         <div id="loginCard">
           <div id="gradient">
             <div class="contents d-flex flex-column align-items-center">
-              <h1>digimart</h1>
+              <h1 class="positionContentsHeader">digimart</h1>
               <div class="card mt-4 cardStyle" style="width: 21rem;">
                 <div class="card-body">
                   <form>
@@ -313,7 +300,7 @@
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js" charset="utf-8"></script>
     <script src="node_modules/popper.js/dist/umd/popper.min.js" charset="utf-8"></script>
     <script src="https://kit.fontawesome.com/4ac3ef5deb.js" crossorigin="anonymous"></script>
-    <script src="plugins/OwlCarousel2-2.3.4/dist/owl.carousel.min.js"></script>
+    <script src="node_modules/owl.carousel/dist/owl.carousel.min.js"></script>
     <script src="js/script.js" charset="utf-8"></script>
   </body>
 
