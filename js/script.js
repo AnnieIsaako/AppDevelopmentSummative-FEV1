@@ -248,7 +248,7 @@ $('#cardsAndComment').on('click', '.editBtn', function() {
   }
 });
 
-$('#submitForm').click(function(){
+$('#submitComment').click(function(){
   event.preventDefault();
   console.log(currentCardId);
 
@@ -477,7 +477,7 @@ $('#signUpHere').click(function(){
   $('#rego').removeClass('d-none');
 });
 
-$('#submitForm').click(function(){
+$('#submitComment').click(function(){
   event.preventDefault();
   const cardId = $(this).data('id');
 
