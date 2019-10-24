@@ -25,8 +25,6 @@ h1 {
 
 .cardListStyle {
   border-radius: 5px !important;
-  box-shadow: 0 0 5px grey;
-  margin-bottom: 15px;
   &:last-child {
     margin-bottom: 0;
   }
@@ -35,6 +33,13 @@ h1 {
   padding: 5px!important;
 }
 
+.shadowCard {
+  box-shadow: 0 0 5px grey;
+}
+
+#userFeatures {
+  margin: 0;
+}
 
 // Larissa Codes Under Here
 h4 {

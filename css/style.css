@@ -18,14 +18,18 @@ h1 {
   max-width: 100%; }
 
 .cardListStyle {
-  border-radius: 5px !important;
-  box-shadow: 0 0 5px grey;
-  margin-bottom: 15px; }
+  border-radius: 5px !important; }
   .cardListStyle:last-child {
     margin-bottom: 0; }
 
 .cardListBodyStyle {
   padding: 5px !important; }
+
+.shadowCard {
+  box-shadow: 0 0 5px grey; }
+
+#userFeatures {
+  margin: 0; }
 
 h4 {
   font-family: 'Avenir';

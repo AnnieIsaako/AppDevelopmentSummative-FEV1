@@ -11,10 +11,7 @@ module.exports = function(grunt) {
     },
     csslint: {
       strict: {
-        options: {
-          import: 2
-        },
-        src: ['css/*.css', 'css/!*.min.css']
+        src: ['css/*.css', '!css/*.min.css']
       }
     },
     // Annies tasks untill here
@@ -27,7 +24,7 @@ module.exports = function(grunt) {
       }
     },
     jshint: {
-      files: ['js/*.js','js/!*.min.js'],
+      files: ['js/*.js','!js/*.min.js'],
         options: {
           esversion: 6
         }
@@ -53,11 +50,11 @@ module.exports = function(grunt) {
         tasks: ['sass', 'cssmin']
       },
       csslint: {
-        files: ['css/*.css'],
+        files: ['css/*.css', '!css/*.min.css'],
         tasks: ['csslint']
       },
       js: {
-        files: ['js/*.js', '!js/*.min.js'],
+        files: ['js/*.js', '!js/script.min.js'],
         tasks: ['jshint', 'uglify']
       }
     }

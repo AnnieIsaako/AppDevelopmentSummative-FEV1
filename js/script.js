@@ -1,3 +1,4 @@
+let editMode = false;
 $.ajax({
     url: './config.json',
     type: 'GET',
@@ -12,12 +13,16 @@ $.ajax({
     }
 });
 
-if(sessionStorage.userName) {
+if(sessionStorage.userID) {
     console.log('you are logged in ');
     $('#login').hide();
-    // $('#logout').removeClass('d-none');
+    $('#regoBtn').hide();
+    $('#logout').removeClass('d-none');
+    $('#cardModal').addClass('shadowCard');
 } else {
     console.log('please sign in');
+    $('#userFeatures').hide();
+    $('#cardModal').removeClass('shadow');
 }
 
 console.log(sessionStorage);
@@ -75,13 +80,13 @@ $('#login').click(function() {
         sessionStorage.setItem('userName', result.username);
 
         seller = sessionStorage.userName;
-        console.log(sessionStorage);
+        console.log(seller);
+
 
         $('#lUsername').val(null);
         $('#lPassword').val(null);
 
-        $('#login').addClass('d-none');
-        $('#index').removeClass('d-none');
+
       }
     },
     error: function(err) {
@@ -192,61 +197,122 @@ $('#cardsAndComment').on('click', '.deleteBtn', function() {
   }
 });
 
+// ************************************************************************
+// ************************ Work in progress *****************************
+// ************************************************************************
+
 $('#cardsAndComment').on('click', '.editBtn', function() {
+  editMode = true;
   if(!sessionStorage.userID) {
-      console.log('You don\'t have permission to edit this item. Please sign in.');
+      $('.editBtn').hide();
       return;
   } else {
     event.preventDefault();
     $('#myModal').modal('hide');
 
-    $('#exampleModalLabel').text('Edit listing');
     $('#addListingModal').modal('show');
-
-      $('#cardsAndComment').on('click', '#subitNewListing', function() {
-        let itemName = $('#itemName').val();
-        let itemPrice = $('#itemPrice').val();
-        let itemDescription = $('#itemDescription').val();
-        let itemImage = $('#itemImage').val();
-        let fd = new FormData();
-
-        const file = $('#itemImage')[0].files[0];
-        fd.append('uploadImage', file);
-        fd.append('itemName', itemName);
-        fd.append('itemPrice', itemPrice);
-        fd.append('itemImage', itemImage);
-
-
-        $.ajax({
-          url: `${url}/updateListing/${currentCardId}`,
-          type: 'PATCH',
-          data: fd,
-          processData: false,
-          contentType: false,
-          success:function(result){
-            console.log(result);
-            $('#addListingModal').modal('hide');
-
-            $('#listingImage').empty();
-            $('#resultName').empty();
-            $('#listingCardDescription').empty();
-            $('#resultPrice').empty();
-            $('#resultSeller').empty();
-
-            $('#listingImage').append(`<img src="${url}/${result.itemImage}" class="card-img-top" style="width: 100%">`);
-            $('#resultName').append(`${result.itemName}`);
-            $('#listingCardDescription').append(`${result.itemDescription}`);
-            $('#resultPrice').append(`$${result.itemPrice}`);
-            $('#resultSeller').append(seller);
-          },
-          error: function(error){
-            console.log(error);
-            console.log('something went wrong with sending the data');
-          }
-        });
+    $('#exampleModalLabel').text('Edit listing');
+    $.ajax({
+        url: `${url}/listing/${currentCardId}`,
+        type: 'get',
+        data: {
+            userId: sessionStorage.userID
+        },
+        dataType: 'json',
+        success:function(result){
+          console.log(result);
+            $('#itemName').val(result.itemName);
+            $('#itemImage').val(result.fileName);
+            $('#itemPrice').val(result.itemPrice);
+            $('#itemDescription').val(result.itemDescription);
+        },
+        error:function(err){
+        console.log(err);
+            console.log('something went wrong with getting the single item');
+        }
     });
   }
 });
+
+$('#submitNewListing').click(function() {
+  let itemName = $('#itemName').val();
+  let itemPrice = $('#itemPrice').val();
+  let itemDescription = $('#itemDescription').val();
+  let itemImage = $('#itemImage').val();
+  let fd = new FormData();
+
+  const file = $('#itemImage')[0].files[0];
+  fd.append('uploadImage', file);
+  fd.append('itemName', itemName);
+  fd.append('itemPrice', itemPrice);
+  fd.append('itemImage', itemImage);
+  console.log(fd);
+  if (editMode === true) {
+    console.log('you are editing');
+    console.log(currentCardId);
+    $.ajax({
+      url: `${url}/listing/${currentCardId}`,
+      type: 'PATCH',
+      data: fd,
+      processData: false,
+      contentType: false,
+      success:function(result){
+        console.log(result);
+    //     console.log(editMode);
+    //     $('#addListingModal').modal('hide');
+    //
+    //     $('#listingImage').append(`<img src="${url}/${result.itemImage}" class="card-img-top" style="width: 100%">`);
+    //     $('#resultName').append(`${result.itemName}`);
+    //     $('#listingCardDescription').append(`${result.itemDescription}`);
+    //     $('#resultPrice').append(`$${result.itemPrice}`);
+    //     $('#resultSeller').append(seller);
+      },
+      error: function(error){
+        console.log(error);
+        console.log('something went wrong with sending the data');
+      }
+    });
+  } else {
+    console.log('you are adding');
+    $.ajax({
+      url: `${url}/listing`,
+      type: 'POST',
+      data: fd,
+      processData: false,
+      contentType: false,
+      success:function(result){
+        console.log(result);
+        $('#addListingModal').modal('hide');
+
+        $('.listingDisplay').append(`
+          <div class="card cardListStyle mb-4 listingCard" id="${result._id}" data-toggle="modal" data-target="#listingModel" data-id="${result._id}">
+            <div>
+              <img class="listingsImg" src="${url}/${result.itemImage}" class="card-img-top">
+            </div>
+
+            <div class="card-body d-flex justify-content-between flex-row">
+              <div class="col-8 col-sm-8 px-1">
+                <h6 class="card-title"> ${result.itemName}</h6>
+              </div>
+              <div class="col-4 col-sm-4 border-left px-1">
+                <small class="text-muted pl-2">$${result.itemPrice}</small>
+              </div>
+            </div>
+          </div>
+        `);
+
+      },
+      error: function(error){
+        console.log(error);
+        console.log('something went wrong with sending the data. Please check that your image is a png or jpeg. Any other file type will not be uploaded.');
+      }
+    });
+  }
+});
+
+// ************************************************************************
+// ************************ Work ends *************************************
+// ************************************************************************
 
 $('#submitComment').click(function(){
   event.preventDefault();
@@ -338,12 +404,16 @@ $('.listingDisplay').on('click', '.listingCard', function(listingNumber){
 
 $('#addNewListing').click(function() {
   event.preventDefault();
+  editMode = false;
+  $('#exampleModalLabel').text('Add listing');
   if(!sessionStorage.userID) {
     $('#invalidModal').modal('show');
   } else {
     $('#addListingModal').modal('show');
-    // let seller = $('#itemSeller').val( );
-    // console.log(seller);
+    $('#itemName').val(null);
+    $('#itemImage').val(null);
+    $('#itemPrice').val(null);
+    $('#itemDescription').val(null);
   }
 });
 
@@ -353,58 +423,6 @@ $('#itemImage').change(function(e){
     const fileName = e.target.files[0].name;
     $(this).next('.custom-file-label').html(fileName);
   }
-});
-
-$('#subitNewListing').click(function() {
-
-  let itemName = $('#itemName').val();
-  let itemPrice = $('#itemPrice').val();
-  let itemDescription = $('#itemDescription').val();
-  let itemImage = $('#itemImage').val();
-  let fd = new FormData();
-
-  const file = $('#itemImage')[0].files[0];
-  fd.append('uploadImage', file);
-  fd.append('itemName', itemName);
-  fd.append('itemPrice', itemPrice);
-  fd.append('itemDescription', itemDescription);
-
-  let newListing = itemName + ' $' + itemPrice + ' ' + itemDescription + ' ' + fd;
-  console.log(newListing);
-
-  $.ajax({
-    url: `${url}/listing`,
-    type: 'POST',
-    data: fd,
-    processData: false,
-    contentType: false,
-    success:function(result){
-      console.log(result);
-      $('#addListingModal').modal('hide');
-
-      $('.listingDisplay').append(`
-        <div class="card cardListStyle mb-4 listingCard" id="${result._id}" data-toggle="modal" data-target="#listingModel" data-id="${result._id}">
-          <div>
-            <img class="listingsImg" src="${url}/${result.itemImage}" class="card-img-top">
-          </div>
-
-          <div class="card-body d-flex justify-content-between flex-row">
-            <div class="col-8 col-sm-8 px-1">
-              <h6 class="card-title"> ${result.itemName}</h6>
-            </div>
-            <div class="col-4 col-sm-4 border-left px-1">
-              <small class="text-muted pl-2">$${result.itemPrice}</small>
-            </div>
-          </div>
-        </div>
-      `);
-
-    },
-    error: function(error){
-      console.log(error);
-      console.log('something went wrong with sending the data. Please check that your image is a png or jpeg. Any other file type will not be uploaded.');
-    }
-  });
 });
 
 $("#popularItemsCards" ).owlCarousel({

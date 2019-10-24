@@ -144,7 +144,7 @@
                       </div>
 
                       <div class="modal-footer d-flex justify-content-center align-items-center mt-4">
-                        <button type="button" class="btn btn-success mt-4" id="subitNewListing">Submit Listing</button>
+                        <button type="button" class="btn btn-success mt-4" id="submitNewListing">Submit Listing</button>
                       </div>
                     </div>
                   </div>
@@ -166,7 +166,7 @@
           <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
-                <div class="card cardListStyle" id="cardModal">
+                <div class="card cardListStyle shadowCard" id="cardModal">
 
                   <div id="listingImage" class="col-12"></div>
 
@@ -190,11 +190,17 @@
                   </div>
                 </div>
                 <!-- katherines comments here -->
-                <div class="row">
+                <div id="userFeatures" class="row ">
                   <div class="col-12 mt-4">
                     <div class="card cardListStyle" id="commentSection">
-                      <button type="button" class="btn btn-warning editBtn">Edit Listing</button>
-                      <button type="button" class="btn btn-danger deleteBtn">Delete Listing</button>
+                      <div class="row">
+                        <div class="col text-center">
+                          <button type="button" class="btn btn-warning editBtn mb-1">Edit Listing</button>
+                        </div>
+                        <div class="col text-center">
+                          <button type="button" class="btn btn-danger deleteBtn">Delete Listing</button>
+                        </div>
+                      </div>
                       <div class="input-group mb-3 p-3">
                         <input type="text" class="form-control w-180 border-bottom" id="comments" rows="3" name="comments" placeholder="Add Comment Here">
                         <div class="input-group-append">
