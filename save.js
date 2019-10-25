@@ -1,4 +1,4 @@
-let editMode;
+let editMode = false;
 $.ajax({
     url: './config.json',
     type: 'GET',
@@ -238,11 +238,11 @@ $('#submitNewListing').click(function() {
   let itemName = $('#itemName').val();
   let itemPrice = $('#itemPrice').val();
   let itemDescription = $('#itemDescription').val();
+  let itemImage = $('#itemImage').val();
   let fd = new FormData();
 
   // look at this file, is it supposed to be uploadImage?
   const file = $('#itemImage')[0].files[0];
-
   fd.append('uploadImage', file);
   fd.append('itemName', itemName);
   fd.append('itemPrice', itemPrice);
@@ -259,15 +259,14 @@ $('#submitNewListing').click(function() {
       contentType: false,
       success:function(result){
         console.log(result);
-        console.log('hello');
     //     console.log(editMode);
-        $('#addListingModal').modal('hide');
+    //     $('#addListingModal').modal('hide');
     //
-        $('#listingImage').append(`<img src="${url}/${result.itemImage}" class="card-img-top" style="width: 100%">`);
-        $('#resultName').append(`${result.itemName}`);
-        $('#listingCardDescription').append(`${result.itemDescription}`);
-        $('#resultPrice').append(`$${result.itemPrice}`);
-        $('#resultSeller').append(seller);
+    //     $('#listingImage').append(`<img src="${url}/${result.itemImage}" class="card-img-top" style="width: 100%">`);
+    //     $('#resultName').append(`${result.itemName}`);
+    //     $('#listingCardDescription').append(`${result.itemDescription}`);
+    //     $('#resultPrice').append(`$${result.itemPrice}`);
+    //     $('#resultSeller').append(seller);
       },
       error: function(error){
         console.log(error);
