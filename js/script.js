@@ -129,7 +129,7 @@ getListingData = () => {
               <h6 class="card-title"> ${result[i].itemName}</h6>
             </div>
             <div class="col-4 col-sm-4 border-left px-1">
-              <small class="text-muted pl-2">$${result[i].itemPrice}</small>
+              <small class="text-muted pl-2 pricing">$${result[i].itemPrice}</small>
             </div>
           </div>
         </div>
@@ -267,7 +267,10 @@ $('#submitNewListing').click(function() {
         $('#resultName').append(`${result.itemName}`);
         $('#listingCardDescription').append(`${result.itemDescription}`);
         $('#resultPrice').append(`$${result.itemPrice}`);
-        $('#resultSeller').append(seller);
+
+        $('.listingsImg').append(`<img class="listingsImg" src="${url}/${result.itemImage}" class="card-img-top">`);
+        // $('card-title').append(`${result[i].itemName}`);
+        // $('pricing').append(`$${result[i].itemPrice}`);
       },
       error: function(error){
         console.log(error);
