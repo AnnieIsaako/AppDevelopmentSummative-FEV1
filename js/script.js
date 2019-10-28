@@ -5,7 +5,7 @@ $.ajax({
     dataType: 'json',
     success:function(keys) {
         url = `${keys.SERVER_URL}:${keys.SERVER_PORT}`;
-        redirectUrl = `${keys.SERVER_URL}/${keys.FRONT_END_PROJECT_NAME}`
+        redirectUrl = `${keys.SERVER_URL}/${keys.FRONT_END_PROJECT_NAME}`;
         console.log(url);
         getListingData();
     },
@@ -125,9 +125,8 @@ getListingData = () => {
 
       $('.listingDisplay').append(`
         <div class="card cardListStyle mb-4 listingCard" id="${result[i]._id}" data-toggle="modal" data-target="#listingModel" data-id="${result[i]._id}">
-          <div>
+
             <img class="listingsImg" src="${img}" class="card-img-top">
-          </div>
           <div class="card-body d-flex justify-content-between flex-row">
             <div class="col-8 col-sm-8 px-1">
               <h6 class="card-title"> ${result[i].itemName}</h6>
@@ -228,7 +227,6 @@ $('#cardsAndComment').on('click', '.editBtn', function() {
         dataType: 'json',
         success:function(result){
           $('#itemName').val(result.itemName);
-          $('#itemImage').val(result.fileName);
           $('#itemPrice').val(result.itemPrice);
           $('#itemDescription').val(result.itemDescription);
 
