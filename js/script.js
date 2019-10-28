@@ -5,6 +5,7 @@ $.ajax({
     dataType: 'json',
     success:function(keys) {
         url = `${keys.SERVER_URL}:${keys.SERVER_PORT}`;
+        redirectUrl = `${keys.SERVER_URL}/${keys.FRONT_END_PROJECT_NAME}`
         console.log(url);
         getListingData();
     },
@@ -15,21 +16,20 @@ $.ajax({
 
 if(sessionStorage.userID) {
     console.log('you are logged in ');
-    $('#login').hide();
-    $('#regoBtn').hide();
+    $('#logBtn').addClass('d-none');
+    $('#regoBtn').addClass('d-none');
     $('#logout').removeClass('d-none');
     $('#cardModal').addClass('shadowCard');
 } else {
     console.log('please sign in');
     $('#userFeatures').hide();
+    $('#login').removeClass('d-none');
+    $('#regoBtn').removeClass('d-none');
     $('#cardModal').removeClass('shadow');
 }
 
-console.log(sessionStorage);
-
 $('#register').click(function() {
   event.preventDefault();
-  console.log('button clicked');
 
   let username = $('#username').val();
   let password = $('#password').val();
@@ -43,13 +43,11 @@ $('#register').click(function() {
       email: email
     },
     success:function(result){
-      console.log(result);
-        $('#rego').addClass('d-none');
-        $('#signIn').removeClass('d-none');
+      window.location.replace(`${redirectUrl}/login.html`);
+      $('#logBtn').addClass('d-none');
+      $('#regoBtn').addClass('d-none');
     },
     error: function(err) {
-      console.log(`${url}/users`);
-      console.log(err);
       console.log('something went wrong with registering user');
     }
   });
@@ -74,18 +72,16 @@ $('#login').click(function() {
       } else if (result === 'invalid password') {
         console.log('Incorrect password');
       } else {
-        console.log('Login successful');
 
         sessionStorage.setItem('userID', result._id);
         sessionStorage.setItem('userName', result.username);
 
         seller = sessionStorage.userName;
-        console.log(seller);
-
 
         $('#lUsername').val(null);
         $('#lPassword').val(null);
 
+        window.location.replace(`${redirectUrl}/index.html`);
 
       }
     },
@@ -104,7 +100,9 @@ $('#logout').click(function() {
     }
     console.log('logout successful');
     sessionStorage.clear();
-    $('#login').show();
+    $('#userFeatures').hide();
+    $('#logBtn').removeClass('d-none');
+    $('#regoBtn').removeClass('d-none');
     $('#logout').addClass('d-none');
 });
 
@@ -118,12 +116,18 @@ getListingData = () => {
     type: 'GET',
     success:function(result) {
       for (var i = 0; i < result.length; i++) {
+      let img = result[i].itemImage;
+      if (!img) {
+        img = 'https://via.placeholder.com/300';
+      } else {
+        img = `${url}/${img}`;
+      }
+
       $('.listingDisplay').append(`
         <div class="card cardListStyle mb-4 listingCard" id="${result[i]._id}" data-toggle="modal" data-target="#listingModel" data-id="${result[i]._id}">
           <div>
-            <img class="listingsImg" src="${url}/${result[i].itemImage}" class="card-img-top">
+            <img class="listingsImg" src="${img}" class="card-img-top">
           </div>
-
           <div class="card-body d-flex justify-content-between flex-row">
             <div class="col-8 col-sm-8 px-1">
               <h6 class="card-title"> ${result[i].itemName}</h6>
@@ -201,6 +205,8 @@ $('#cardsAndComment').on('click', '.deleteBtn', function() {
 // ************************ Work in progress *****************************
 // ************************************************************************
 
+let activeCard = null;
+
 $('#cardsAndComment').on('click', '.editBtn', function() {
   editMode = true;
   if(!sessionStorage.userID) {
@@ -212,6 +218,7 @@ $('#cardsAndComment').on('click', '.editBtn', function() {
 
     $('#addListingModal').modal('show');
     $('#exampleModalLabel').text('Edit listing');
+    $('#uploadImage').hide();
     $.ajax({
         url: `${url}/listing/${currentCardId}`,
         type: 'get',
@@ -220,11 +227,12 @@ $('#cardsAndComment').on('click', '.editBtn', function() {
         },
         dataType: 'json',
         success:function(result){
-          console.log(result);
-            $('#itemName').val(result.itemName);
-            $('#itemImage').val(result.fileName);
-            $('#itemPrice').val(result.itemPrice);
-            $('#itemDescription').val(result.itemDescription);
+          $('#itemName').val(result.itemName);
+          $('#itemImage').val(result.fileName);
+          $('#itemPrice').val(result.itemPrice);
+          $('#itemDescription').val(result.itemDescription);
+
+          activeCard = result;
         },
         error:function(err){
         console.log(err);
@@ -249,28 +257,26 @@ $('#submitNewListing').click(function() {
   fd.append('itemDescription', itemDescription);
 
   if (editMode === true) {
-    console.log('you are editing');
-    console.log(currentCardId);
     $.ajax({
       url: `${url}/listing/${currentCardId}`,
       type: 'PATCH',
-      data: fd,
-      processData: false,
-      contentType: false,
+      data: {
+        itemName: itemName,
+        itemPrice: itemPrice,
+        itemDescription: itemDescription
+      },
       success:function(result){
-        console.log(result);
-        console.log('hello');
-    //     console.log(editMode);
+        let activeCardID = document.getElementById(currentCardId);
+
+        // Update the modal
         $('#addListingModal').modal('hide');
-    //
-        $('#listingImage').append(`<img src="${url}/${result.itemImage}" class="card-img-top" style="width: 100%">`);
         $('#resultName').append(`${result.itemName}`);
         $('#listingCardDescription').append(`${result.itemDescription}`);
         $('#resultPrice').append(`$${result.itemPrice}`);
 
-        $('.listingsImg').append(`<img class="listingsImg" src="${url}/${result.itemImage}" class="card-img-top">`);
-        // $('card-title').append(`${result[i].itemName}`);
-        // $('pricing').append(`$${result[i].itemPrice}`);
+        // Update the DOM card title when the modal closes
+        activeCardID.querySelector('.card-title').innerText = itemName;
+        activeCardID.querySelector('.pricing').innerText = `$${itemPrice}`;
       },
       error: function(error){
         console.log(error);
@@ -278,7 +284,6 @@ $('#submitNewListing').click(function() {
       }
     });
   } else {
-    console.log('you are adding');
     $.ajax({
       url: `${url}/listing`,
       type: 'POST',
@@ -321,7 +326,6 @@ $('#submitNewListing').click(function() {
 
 $('#submitComment').click(function(){
   event.preventDefault();
-  console.log(currentCardId);
 
   if(!sessionStorage.userID) {
     $('#comments').val(null);
@@ -339,8 +343,6 @@ $('#submitComment').click(function(){
         commentID:commentIdFromCard
       },
       success:function(result){
-        console.log(result);
-        // $('#comments').val(null);
         getCommentData();
         $('#commentsDisplay').append(`
           <div id="commentsCard" class="col-md-4">
@@ -368,14 +370,12 @@ $('.listingDisplay').on('click', '.listingCard', function(listingNumber){
 
   currentCardId = $(this).data('id');
   console.log(this);
-  // console.log(cardId);
 
   $.ajax({
     url: `${url}/listing/${currentCardId}`,
     type: 'GET',
     dataType: 'json',
     success:function(result){
-      // console.log(result);
       $('#myModal').modal('show');
 
       $('#listingImage').empty();
@@ -393,7 +393,6 @@ $('.listingDisplay').on('click', '.listingCard', function(listingNumber){
       getCommentData();
 
       if(!sessionStorage.userID) {
-          console.log('user can not update or delte');
           return;
       } else {
         $('#userListingButtons').removeClass('d-none');
@@ -401,7 +400,6 @@ $('.listingDisplay').on('click', '.listingCard', function(listingNumber){
 
     },
     error:function(err){
-        console.log(err);
         console.log('something went wrong with getting the single product');
     }
   });
@@ -415,6 +413,7 @@ $('#addNewListing').click(function() {
     $('#invalidModal').modal('show');
   } else {
     $('#addListingModal').modal('show');
+    $('#uploadImage').show();
     $('#itemName').val(null);
     $('#itemImage').val(null);
     $('#itemPrice').val(null);
@@ -423,7 +422,6 @@ $('#addNewListing').click(function() {
 });
 
 $('#itemImage').change(function(e){
-  // console.log(e.target.files.length);
   if(e.target.files.length > 0){
     const fileName = e.target.files[0].name;
     $(this).next('.custom-file-label').html(fileName);
@@ -465,41 +463,6 @@ $('#hamburgerNav').click(function(){
 
 // larissa untill here
 
-$('#logBtn').click(function(){
- $('#index').addClass('d-none');
- $('#signIn').removeClass('d-none');
- $('#logBtn').addClass('d-none');
- $('#regoBtn').addClass('d-none');
- $('#logout').removeClass('d-none');
-});
-
-$('#logout').click(function(){
- $('#logBtn').removeClass('d-none');
- $('#regoBtn').removeClass('d-none');
- $('#logout').addClass('d-none');
-});
-
-$('.guest').click(function(){
- $('#index').removeClass('d-none');
- $('#signIn').addClass('d-none');
- $('#rego').addClass('d-none');
- $('#logBtn').removeClass('d-none');
- $('#regoBtn').removeClass('d-none');
- $('#logout').addClass('d-none');
-});
-
-$('#signInHere').click(function(){
- $('#index').addClass('d-none');
- $('#signIn').removeClass('d-none');
- $('#rego').addClass('d-none');
-});
-
-$('#signUpHere').click(function(){
-  $('#index').addClass('d-none');
-  $('#signIn').addClass('d-none');
-  $('#rego').removeClass('d-none');
-});
-
 $('#submitComment').click(function(){
   event.preventDefault();
   const cardId = $(this).data('id');
@@ -513,7 +476,6 @@ $('#submitComment').click(function(){
       commentDescription: commentArea
     },
     success:function(result){
-      console.log(result);
       $('#comments').val(null);
       $('#commentsDisplay').append(`
         <div id="commentsCard" class="col-md-4">
@@ -526,7 +488,6 @@ $('#submitComment').click(function(){
       `);
     },
     error: function(error){
-      console.log(error);
       console.log('something went wrong with sending the data');
     }
   });
