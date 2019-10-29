@@ -10,10 +10,21 @@ module.exports = function(grunt) {
       }
     },
     csslint: {
-      strict: {
-        src: ['css/*.css', '!css/*.min.css']
-      }
-    },
+          lax: {
+              options: {
+                  import: 2,
+                  'order-alphabetical': false,
+                  'important': false,
+                  'ids': false,
+                  'unique-headings': false,
+                  'universal-selector': false,
+                  'font-sizes': false,
+                  'box-sizing': false,
+                  'fallback-colors': false
+              },
+              src: ['css/*.css', '!css/*.min.css']
+          }
+      },
     // Annies tasks untill here
 
     sass: {
