@@ -81,7 +81,7 @@ $('#login').click(function() {
         $('#lUsername').val(null);
         $('#lPassword').val(null);
 
-        window.location.replace(`${redirectUrl}/index.html`);
+        window.location.replace(`${redirectUrl}/`);
 
       }
     },
@@ -106,7 +106,7 @@ $('#logout').click(function() {
     $('#logout').addClass('d-none');
 });
 
-// Annie codes untill here
+
 
 let currentCardId;
 
@@ -200,9 +200,6 @@ $('#cardsAndComment').on('click', '.deleteBtn', function() {
   }
 });
 
-// ************************************************************************
-// ************************ Work in progress *****************************
-// ************************************************************************
 
 let activeCard = null;
 
@@ -246,7 +243,6 @@ $('#submitNewListing').click(function() {
   let itemDescription = $('#itemDescription').val();
   let fd = new FormData();
 
-  // look at this file, is it supposed to be uploadImage?
   const file = $('#itemImage')[0].files[0];
 
   fd.append('uploadImage', file);
@@ -266,13 +262,13 @@ $('#submitNewListing').click(function() {
       success:function(result){
         let activeCardID = document.getElementById(currentCardId);
 
-        // Update the modal
+
         $('#addListingModal').modal('hide');
         $('#resultName').append(`${result.itemName}`);
         $('#listingCardDescription').append(`${result.itemDescription}`);
         $('#resultPrice').append(`$${result.itemPrice}`);
 
-        // Update the DOM card title when the modal closes
+
         activeCardID.querySelector('.card-title').innerText = itemName;
         activeCardID.querySelector('.pricing').innerText = `$${itemPrice}`;
       },
@@ -318,9 +314,6 @@ $('#submitNewListing').click(function() {
   }
 });
 
-// ************************************************************************
-// ************************ Work ends *************************************
-// ************************************************************************
 
 $('#submitComment').click(function(){
   event.preventDefault();
@@ -459,7 +452,7 @@ $('#hamburgerNav').click(function(){
   }
 });
 
-// larissa untill here
+
 
 $('#submitComment').click(function(){
   event.preventDefault();
