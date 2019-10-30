@@ -22,7 +22,7 @@ Other projects requirements include:
 
 ## Project Installation
 
-This repository is the front end version of our project. If cloning this reposity, you will have to also have a server running and have it connected to mongodb. The repo for our server is located [here](https://github.com/risscasey/AppDevlopmentSummative).
+This repository is the front end version of our project. If cloning this reposity, you will have to also have a server running and have it connected to mongodb. The repo for our server is located [here](https://github.com/AnnieIsaako/serverDigimartSummative). This is forked from [Larissa Casey's Repo](https://github.com/risscasey/AppDevlopmentSummative).
 
 ### Installation
 To install everything needed for this project you need to have a stable version of Node JS and NPM installed on your computer or server;
@@ -35,6 +35,8 @@ You will also need to create a config.json;
 - [x] duplicate the config.example.json file
 - [x] Rename the file config.json
 - [x] enter the appropriate information into the config
+
+Important Note: The 'FRONT_END_PROJECT_NAME' must be the path of the project folder when it is already cloned. e.g. folderName/projectFrontEndName. The path doesn't include the www folder, htdocs folder, etc. Otherwise, just state the name of the front end project.
 
 Enjoy! :sparkles:
 

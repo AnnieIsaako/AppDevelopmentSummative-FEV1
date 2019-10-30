@@ -5,7 +5,7 @@ $.ajax({
     dataType: 'json',
     success:function(keys) {
         url = `${keys.SERVER_URL}:${keys.SERVER_PORT}`;
-        redirectUrl = `${keys.SERVER_URL}/${keys.FRONT_END_PROJECT_NAME}`;
+        redirectUrl = `${keys.SERVER_URL}/${keys.FRONT_END_PROJECT_PATH}`;
         console.log(url);
         getListingData();
     },
